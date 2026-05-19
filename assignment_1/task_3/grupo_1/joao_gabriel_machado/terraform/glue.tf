@@ -73,26 +73,3 @@ resource "aws_glue_job" "etl_job" {
   worker_type       = "G.1X"
   number_of_workers = 2
 }
-
-
-# task 3
-resource "aws_glue_catalog_database" "star_schema_db" {
-  name        = "classicmodels_star_schema"
-  description = "Database logico para o modelo estrela (Star Schema) via Athena"
-}
-
-resource "aws_glue_crawler" "parquet_crawler" {
-  database_name = aws_glue_catalog_database.star_schema_db.name
-  name          = "classicmodels-parquet-crawler"
-  role          = data.aws_iam_role.lab_role.arn
-
-  # Aponta para a pasta dos parquets
-  s3_target {
-    path = "s3://${aws_s3_bucket.datalake.id}/data/"
-  }
-}
-
-resource "aws_s3_object" "athena_results" {
-  bucket = aws_s3_bucket.datalake.id
-  key    = "athena-results/"
-}
