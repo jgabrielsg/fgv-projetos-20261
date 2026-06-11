@@ -14,7 +14,7 @@ DB_NAME = 'classicmodels'
 DB_PORT = "3306"
 
 S3_BUCKET = "fgv-datalake-joao-gabriel-9090"
-GLUE_DATABASE = "default" 
+GLUE_DATABASE = "classicmodels_star_schema"
 ATHENA_OUTPUT = f"s3://{S3_BUCKET}/temp/"
 
 def execute_athena_query(athena_client, query):

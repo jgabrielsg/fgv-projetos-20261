@@ -12,6 +12,7 @@ def extract_table(glue_context, connection_name, table_name, custom_query=None):
     options = {
         "useConnectionProperties": "true",
         "connectionName": connection_name,
+        "dbtable": table_name,
     }
     
     # If a custom query is passed (for incremental load), use sampleQuery
@@ -212,7 +213,7 @@ def main():
         # =========================================================================
         print(f"Updating watermark to new max date: {new_max_date}")
         success_sql = f"""
-            UPDATE etl_watermark 
+            UPDATE classicmodels.etl_watermark 
             SET last_processed_order_date = '{new_max_date}', 
                 last_run_at = UTC_TIMESTAMP(), 
                 last_run_status = 'SUCCEEDED' 
@@ -229,17 +230,11 @@ def main():
         # =========================================================================
         print(f"ETL Job Failed! Rolling back watermark status. Error: {str(e)}")
         fail_sql = """
-            UPDATE etl_watermark 
+            UPDATE classicmodels.etl_watermark 
             SET last_run_status = 'FAILED',
                 last_run_at = UTC_TIMESTAMP()
             WHERE pipeline_name = 'classicmodels_sales'
         """
-        try:
-            execute_raw_sql(sc, jdbc_url, db_user, db_pass, fail_sql)
-        except Exception as rollback_err:
-            print(f"Failed to update watermark failure status: {rollback_err}")
-        
-        raise e 
 
 if __name__ == '__main__':
     main()
