@@ -2,18 +2,18 @@
 
 --- Metadata Details ---
 Pipeline Name: classicmodels_sales
-Last Processed Date: 2005-09-13
-Last Run Timestamp: None
-Last Run Status: INITIALIZED
+Last Processed Date: 2005-10-04
+Last Run Timestamp: 2026-06-11 15:33:52
+Last Run Status: SUCCEEDED
 
-Check 1 & 2 PASSED: Watermark found with date 2005-09-13.
+Check 1 & 2 PASSED: Watermark found with date 2005-10-04.
 
 --- Source Volume Details ---
-Total Orders in DB: 386
-Max Order Date in DB: 2005-10-04
+Total Orders in DB: 396
+Max Order Date in DB: 2005-10-25
 Pending Orders for ETL: 10
 
-Check 3 PASSED: New data detected up to 2005-10-04 (10 pending orders).
+Check 3 PASSED: New data detected up to 2005-10-25 (10 pending orders).
 --- Lineage & Integrity Details ---
 Total rows in orderdetails for pending orders: 21
 Orphaned new orders (without details): 0

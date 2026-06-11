@@ -114,3 +114,21 @@ resource "aws_cloudwatch_event_target" "glue_target" {
   # LabRole permissiva para o EventBridge conseguir apertar
   role_arn  = data.aws_iam_role.lab_role.arn
 }
+# =====================================================================
+# GLUE DATA CATALOG & CRAWLER (A ponte para o Athena)
+# =====================================================================
+# 1. Cria o Banco de Dados Virtual no Athena
+resource "aws_glue_catalog_database" "star_schema_db" {
+  name = "classicmodels_star_schema"
+}
+
+# 2. Cria o Crawler para mapear os arquivos Parquet do S3 para o Athena
+resource "aws_glue_crawler" "parquet_crawler" {
+  database_name = aws_glue_catalog_database.star_schema_db.name
+  name          = "classicmodels-parquet-crawler"
+  role          = data.aws_iam_role.lab_role.arn
+
+  s3_target {
+    path = "s3://${aws_s3_bucket.datalake.bucket}/data/"
+  }
+}
